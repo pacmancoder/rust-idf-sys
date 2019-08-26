@@ -97,10 +97,13 @@ pub union wifi_config_t {
 
 extern "C" {
     pub fn esp_wifi_init(config: *const wifi_init_config_t) -> esp_err_t;
+    pub fn esp_wifi_deinit() -> esp_err_t;
 
     pub fn esp_wifi_set_mode(mode: wifi_mode_t) -> esp_err_t;
     pub fn esp_wifi_set_config(interface: wifi_interface_t, conf: *mut wifi_config_t) -> esp_err_t;
+
     pub fn esp_wifi_start() -> esp_err_t;
+    pub fn esp_wifi_stop() -> esp_err_t;
 }
 
 pub unsafe fn WIFI_INIT_CONFIG_DEFAULT() ->  wifi_init_config_t {

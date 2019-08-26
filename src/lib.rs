@@ -17,3 +17,4 @@ pub mod error;
 pub mod network_adapter;
 pub mod wifi;
 pub mod system_event;
+pub mod freertos;
