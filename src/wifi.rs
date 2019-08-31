@@ -7,6 +7,7 @@ use crate::{
     network_adapter,
 };
 
+
 pub type wifi_mode_t = u32;
 pub const wifi_mode_t_WIFI_MODE_NULL: wifi_mode_t = 0;
 pub const wifi_mode_t_WIFI_MODE_STA: wifi_mode_t = 1;
@@ -55,7 +56,7 @@ pub struct wifi_init_config_t {
 
 #[repr(C)]
 #[derive(Copy, Clone)]
-pub struct wifi_fast_scan_threshold_t {
+pub struct wifi_scan_threshold_t {
     pub rssi: i8,
     pub authmode: wifi_auth_mode_t,
 }
@@ -71,7 +72,7 @@ pub struct wifi_sta_config_t {
     pub channel: u8,
     pub listen_interval: u16,
     pub sort_method: wifi_sort_method_t,
-    pub threshold: wifi_fast_scan_threshold_t,
+    pub threshold: wifi_scan_threshold_t,
 }
 
 #[repr(C)]
