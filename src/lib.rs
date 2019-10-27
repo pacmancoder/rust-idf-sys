@@ -19,3 +19,4 @@ pub mod wifi;
 pub mod system_event;
 pub mod freertos;
 pub mod gpio;
+pub mod pwm;
