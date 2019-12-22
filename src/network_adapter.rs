@@ -36,3 +36,7 @@ pub struct tcpip_adapter_ip_info_t {
     pub netmask: ip4_addr_t,
     pub gw: ip4_addr_t,
 }
+
+extern "C" {
+    pub fn tcpip_adapter_init();
+}

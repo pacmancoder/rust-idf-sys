@@ -7,6 +7,36 @@ use crate::{
     network_adapter,
 };
 
+pub type wifi_err_reason_t = u32;
+pub const wifi_err_reason_t_WIFI_REASON_UNSPECIFIED: wifi_err_reason_t = 1;
+pub const wifi_err_reason_t_WIFI_REASON_AUTH_EXPIRE: wifi_err_reason_t = 2;
+pub const wifi_err_reason_t_WIFI_REASON_AUTH_LEAVE: wifi_err_reason_t = 3;
+pub const wifi_err_reason_t_WIFI_REASON_ASSOC_EXPIRE: wifi_err_reason_t = 4;
+pub const wifi_err_reason_t_WIFI_REASON_ASSOC_TOOMANY: wifi_err_reason_t = 5;
+pub const wifi_err_reason_t_WIFI_REASON_NOT_AUTHED: wifi_err_reason_t = 6;
+pub const wifi_err_reason_t_WIFI_REASON_NOT_ASSOCED: wifi_err_reason_t = 7;
+pub const wifi_err_reason_t_WIFI_REASON_ASSOC_LEAVE: wifi_err_reason_t = 8;
+pub const wifi_err_reason_t_WIFI_REASON_ASSOC_NOT_AUTHED: wifi_err_reason_t = 9;
+pub const wifi_err_reason_t_WIFI_REASON_DISASSOC_PWRCAP_BAD: wifi_err_reason_t = 10;
+pub const wifi_err_reason_t_WIFI_REASON_DISASSOC_SUPCHAN_BAD: wifi_err_reason_t = 11;
+pub const wifi_err_reason_t_WIFI_REASON_IE_INVALID: wifi_err_reason_t = 13;
+pub const wifi_err_reason_t_WIFI_REASON_MIC_FAILURE: wifi_err_reason_t = 14;
+pub const wifi_err_reason_t_WIFI_REASON_4WAY_HANDSHAKE_TIMEOUT: wifi_err_reason_t = 15;
+pub const wifi_err_reason_t_WIFI_REASON_GROUP_KEY_UPDATE_TIMEOUT: wifi_err_reason_t = 16;
+pub const wifi_err_reason_t_WIFI_REASON_IE_IN_4WAY_DIFFERS: wifi_err_reason_t = 17;
+pub const wifi_err_reason_t_WIFI_REASON_GROUP_CIPHER_INVALID: wifi_err_reason_t = 18;
+pub const wifi_err_reason_t_WIFI_REASON_PAIRWISE_CIPHER_INVALID: wifi_err_reason_t = 19;
+pub const wifi_err_reason_t_WIFI_REASON_AKMP_INVALID: wifi_err_reason_t = 20;
+pub const wifi_err_reason_t_WIFI_REASON_UNSUPP_RSN_IE_VERSION: wifi_err_reason_t = 21;
+pub const wifi_err_reason_t_WIFI_REASON_INVALID_RSN_IE_CAP: wifi_err_reason_t = 22;
+pub const wifi_err_reason_t_WIFI_REASON_802_1X_AUTH_FAILED: wifi_err_reason_t = 23;
+pub const wifi_err_reason_t_WIFI_REASON_CIPHER_SUITE_REJECTED: wifi_err_reason_t = 24;
+pub const wifi_err_reason_t_WIFI_REASON_BEACON_TIMEOUT: wifi_err_reason_t = 200;
+pub const wifi_err_reason_t_WIFI_REASON_NO_AP_FOUND: wifi_err_reason_t = 201;
+pub const wifi_err_reason_t_WIFI_REASON_AUTH_FAIL: wifi_err_reason_t = 202;
+pub const wifi_err_reason_t_WIFI_REASON_ASSOC_FAIL: wifi_err_reason_t = 203;
+pub const wifi_err_reason_t_WIFI_REASON_HANDSHAKE_TIMEOUT: wifi_err_reason_t = 204;
+pub const wifi_err_reason_t_WIFI_REASON_BASIC_RATE_NOT_SUPPORT: wifi_err_reason_t = 205;
 
 pub type wifi_mode_t = u32;
 pub const wifi_mode_t_WIFI_MODE_NULL: wifi_mode_t = 0;
@@ -32,26 +62,32 @@ pub type wifi_sort_method_t = u32;
 pub const wifi_sort_method_t_WIFI_CONNECT_AP_BY_SIGNAL: wifi_sort_method_t = 0;
 pub const wifi_sort_method_t_WIFI_CONNECT_AP_BY_SECURITY: wifi_sort_method_t = 1;
 
+pub const WIFI_PROTOCAL_11B: u32 = 1;
+pub const WIFI_PROTOCAL_11G: u32 = 2;
+pub const WIFI_PROTOCAL_11N: u32 = 4;
+
 pub use network_adapter::esp_interface_t as wifi_interface_t;
 
 #[repr(C)]
-#[derive(Copy, Clone)]
+#[derive(Debug, Copy, Clone)]
 pub struct wifi_init_config_t {
     pub event_handler: system_event_handler_t,
     pub osi_funcs: *mut xtensa_void,
-    pub static_rx_buf_num: xtensa_int,
-    pub dynamic_rx_buf_num: xtensa_int,
-    pub tx_buf_type: xtensa_int,
-    pub static_tx_buf_num: xtensa_int,
-    pub dynamic_tx_buf_num: xtensa_int,
-    pub csi_enable: xtensa_int,
-    pub ampdu_rx_enable: xtensa_int,
-    pub ampdu_tx_enable: xtensa_int,
-    pub nvs_enable: xtensa_int,
-    pub nano_enable: xtensa_int,
-    pub tx_ba_win: xtensa_int,
-    pub rx_ba_win: xtensa_int,
-    pub magic: xtensa_int,
+    pub qos_enable: u8,
+    pub ampdu_rx_enable: u8,
+    pub rx_ba_win: u8,
+    pub rx_ampdu_buf_num: u8,
+    pub rx_ampdu_buf_len: u32,
+    pub rx_max_single_pkt_len: u32,
+    pub rx_buf_len: u32,
+    pub amsdu_rx_enable: u8,
+    pub rx_buf_num: u8,
+    pub rx_pkt_num: u8,
+    pub left_continuous_rx_buf_num: u8,
+    pub tx_buf_num: u8,
+    pub nvs_enable: u8,
+    pub nano_enable: u8,
+    pub magic: u32,
 }
 
 #[repr(C)]
@@ -105,24 +141,30 @@ extern "C" {
 
     pub fn esp_wifi_start() -> esp_err_t;
     pub fn esp_wifi_stop() -> esp_err_t;
+
+    pub fn esp_wifi_set_protocol(ifx: wifi_interface_t, protocol_bitmap: u8) -> esp_err_t;
+
+    pub fn esp_wifi_connect() -> esp_err_t;
 }
 
 pub unsafe fn WIFI_INIT_CONFIG_DEFAULT() ->  wifi_init_config_t {
     wifi_init_config_t {
         event_handler: Some(esp_event_send),
         osi_funcs: ::core::ptr::null_mut(),
-        static_rx_buf_num: 5,
-        dynamic_rx_buf_num: 0,
-        tx_buf_type: 0,
-        static_tx_buf_num: 6,
-        dynamic_tx_buf_num: 0,
-        csi_enable: 0,
+        qos_enable: 0,
         ampdu_rx_enable: 0,
-        ampdu_tx_enable: 0,
+        rx_ampdu_buf_len: 256,
+        rx_ampdu_buf_num: 5,
+        amsdu_rx_enable: 0,
+        rx_ba_win: 0,
+        rx_max_single_pkt_len: 1600 - 524,
+        rx_buf_len: 524,
+        rx_buf_num: 16,
+        left_continuous_rx_buf_num: 4,
+        rx_pkt_num: 7,
+        tx_buf_num: 6,
         nvs_enable: 1,
         nano_enable: 0,
-        tx_ba_win: 0,
-        rx_ba_win: 0,
         magic: 0x1F2F3F4F,
     }
 }
