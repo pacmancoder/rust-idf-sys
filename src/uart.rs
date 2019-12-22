@@ -1,9 +1,8 @@
 use crate::{
     ffi::xtensa_int,
     error::esp_err_t,
-    freertos::QueueHandle_t
 };
-use crate::ffi::xtensa_unsigned_long;
+use crate::ffi::{xtensa_unsigned_long, xtensa_void};
 
 pub type uart_port_t = u32;
 pub const uart_port_t_UART_NUM_0: uart_port_t = 0;
@@ -84,7 +83,7 @@ extern "C" {
         rx_buffer_size: xtensa_int,
         tx_buffer_size: xtensa_int,
         queue_size: xtensa_int,
-        uart_queue: *mut QueueHandle_t,
+        uart_queue: *mut xtensa_void,
     ) -> esp_err_t;
 
     pub fn uart_driver_delete(uart_num: uart_port_t) -> esp_err_t;
