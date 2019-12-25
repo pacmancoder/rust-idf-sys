@@ -143,8 +143,12 @@ pub struct system_event_t {
 }
 
 pub type system_event_handler_t =
-::core::option::Option<unsafe extern "C" fn(event: *mut system_event_t) -> esp_err_t>;
+    Option<unsafe extern "C" fn(event: *mut system_event_t) -> esp_err_t>;
+
+pub type system_event_cb_t =
+    Option<unsafe extern "C" fn(ctx: *mut xtensa_void, event: *mut system_event_t) -> esp_err_t>;
 
 extern "C" {
     pub fn esp_event_send(event: *mut system_event_t) -> esp_err_t;
+    pub fn esp_event_loop_init(cb: system_event_cb_t, ctx: *mut xtensa_void) -> esp_err_t;
 }

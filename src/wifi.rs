@@ -62,9 +62,9 @@ pub type wifi_sort_method_t = u32;
 pub const wifi_sort_method_t_WIFI_CONNECT_AP_BY_SIGNAL: wifi_sort_method_t = 0;
 pub const wifi_sort_method_t_WIFI_CONNECT_AP_BY_SECURITY: wifi_sort_method_t = 1;
 
-pub const WIFI_PROTOCAL_11B: u32 = 1;
-pub const WIFI_PROTOCAL_11G: u32 = 2;
-pub const WIFI_PROTOCAL_11N: u32 = 4;
+pub const WIFI_PROTOCOL_11B: u32 = 1;
+pub const WIFI_PROTOCOL_11G: u32 = 2;
+pub const WIFI_PROTOCOL_11N: u32 = 4;
 
 pub use network_adapter::esp_interface_t as wifi_interface_t;
 
