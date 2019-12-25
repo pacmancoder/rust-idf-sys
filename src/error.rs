@@ -13,6 +13,6 @@ pub const esp_err_t_ESP_ERR_WIFI_CONN: esp_err_t = esp_err_t_ESP_ERR_WIFI_BASE +
 pub const esp_err_t_ESP_ERR_WIFI_NVS: esp_err_t = esp_err_t_ESP_ERR_WIFI_BASE + 8;
 pub const esp_err_t_ESP_ERR_WIFI_PASSWORD: esp_err_t = esp_err_t_ESP_ERR_WIFI_BASE + 11;
 
-const esp_err_t_ESP_ERR_NVS_BASE: esp_err_t = 0x1100;
-const esp_err_t_ESP_ERR_NVS_NOT_FOUND: esp_err_t = esp_err_t_ESP_ERR_NVS_BASE + 2;
-const esp_err_t_ESP_ERR_NVS_NO_FREE_PAGES: esp_err_t = esp_err_t_ESP_ERR_NVS_BASE + 13;
+pub const esp_err_t_ESP_ERR_NVS_BASE: esp_err_t = 0x1100;
+pub const esp_err_t_ESP_ERR_NVS_NOT_FOUND: esp_err_t = esp_err_t_ESP_ERR_NVS_BASE + 2;
+pub const esp_err_t_ESP_ERR_NVS_NO_FREE_PAGES: esp_err_t = esp_err_t_ESP_ERR_NVS_BASE + 13;
